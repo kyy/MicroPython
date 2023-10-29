@@ -3,3 +3,4 @@ pip-tools
 pyserial
 docopt
 adafruit-ampy < 1.1.0
+esptool

@@ -6,8 +6,14 @@
 #
 adafruit-ampy==1.0.7
     # via -r requirements.in
+bitarray==2.8.2
+    # via bitstring
+bitstring==4.1.2
+    # via esptool
 build==1.0.3
     # via pip-tools
+cffi==1.16.0
+    # via cryptography
 click==8.1.7
     # via
     #   adafruit-ampy
@@ -16,22 +22,37 @@ colorama==0.4.6
     # via
     #   build
     #   click
+cryptography==41.0.5
+    # via esptool
 docopt==0.6.2
     # via -r requirements.in
+ecdsa==0.18.0
+    # via esptool
+esptool==4.6.2
+    # via -r requirements.inp
 importlib-metadata==6.8.0
     # via build
 packaging==23.2
     # via build
 pip-tools==7.3.0
     # via -r requirements.in
+pycparser==2.21
+    # via cffi
 pyproject-hooks==1.0.0
     # via build
 pyserial==3.5
     # via
     #   -r requirements.in
     #   adafruit-ampy
+    #   esptool
 python-dotenv==1.0.0
     # via adafruit-ampy
+pyyaml==6.0.1
+    # via esptool
+reedsolo==1.7.0
+    # via esptool
+six==1.16.0
+    # via ecdsa
 tomli==2.0.1
     # via
     #   build
