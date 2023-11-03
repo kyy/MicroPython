@@ -3,4 +3,4 @@ https://bikealive.nl/esp8266-wemos.html
 
 esptool --port COM5 chip_id  # определить чип
 esptool --port COM5 erase_flash   # очистить память
-esptool --port COM5 --baud 115200 write_flash --flash_mode dio --flash_size=4MB 0 ESP8266_GENERIC-20231005-v1.21.0.bin
+esptool --port COM5 --baud 115200 write_flash --flash_mode dio --flash_size=4MB 0 firmware/ESP8266_GENERIC-20231005-v1.21.0.bin
