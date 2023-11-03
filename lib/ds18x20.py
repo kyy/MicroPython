@@ -36,7 +36,7 @@ class DS18X20:
             self.powerpin(PULLUP_OFF)
         return [rom for rom in self.ow.scan() if rom[0] in (0x10, 0x22, 0x28)]
 
-    def convert_temp(self, rom=None):
+    def convert_temp(self, rom=None) -> object:
         if self.powerpin is not None: # deassert strong pull-up
             self.powerpin(PULLUP_OFF)
         self.ow.reset()

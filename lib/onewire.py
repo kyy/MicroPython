@@ -167,4 +167,3 @@ class OneWire:
                 i -= 1
             rom[byte] = r_b
         return rom, next_diff
-

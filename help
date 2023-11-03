@@ -1,3 +1,4 @@
+https://github.com/kevinkk525/pysmartnode/blob/345460f071edbf40ba5c3dc0ffc3ec814f2a16c5/main.py
 https://bikealive.nl/esp8266-wemos.html
 
 esptool --port COM5 chip_id  # определить чип

@@ -1,38 +1,51 @@
 import gc
 import socket
 import time
+from lib.ds18x20 import DS18X20
+from lib.onewire import OneWire
+from machine import Pin
 
-from boot import ds_sensor
+
+d6 = Pin(12, Pin.IN, Pin.PULL_UP)
+d7 = OneWire(Pin(13))
+d8 = Pin(15, Pin.OUT)
+
+ds = DS18X20(d7)
+
+roms = ds.scan()
 
 
 def read_ds_sensor():
-  roms = ds_sensor.scan()
-  print('Found DS devices: ', roms)
-  print('Temperatures: ')
-  ds_sensor.convert_temp()
-  for rom in roms:
-    temp = ds_sensor.read_temp(rom)
-    if isinstance(temp, float):
-      msg = round(temp, 2)
-      print(temp, end=' ')
-      print('Valid temperature')
-      return msg
-  return 0
+    rom = roms[0]
+    ds.convert_temp()
+    time.sleep_ms(800)
+    ds.resolution(rom, 12)
+    temp_far = ds.read_temp(rom)
+    temp_cels = (temp_far - 32) * 5/9
+
+    return round(temp_cels, 2)
 
 
 def web_page():
-    temp = read_ds_sensor()
-    html = """<!DOCTYPE HTML><html><head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    try:
+        temp = read_ds_sensor()
+    except:
+        temp = None
+    html = """<!DOCTYPE HTML><html>
+    <head>
+    
   <style> html { font-family: Arial; display: inline-block; margin: 0px auto; text-align: center; }
     h2 { font-size: 3.0rem; } p { font-size: 3.0rem; } .units { font-size: 1.2rem; } 
     .ds-labels{ font-size: 1.5rem; vertical-align:middle; padding-bottom: 15px; }
-  </style></head><body><h2>ESP with DS18B20</h2>
-  <p><i class="fas fa-thermometer-half" style="color:#059e8a;"></i> 
+  </style>
+  
+  </head><body>
+  
+  <h2>ESP with DS18B20</h2>
+  
+  <p><i style="color:#059e8a;"></i> 
     <span class="ds-labels">Temperature</span>
     <span id="temperature">""" + str(temp) + """</span>
-    <sup class="units">&deg;C</sup>
   </p>"""
     return html
 
@@ -42,10 +55,11 @@ s.bind(('', 80))
 s.listen(5)
 
 while True:
+    s: socket
+    conn, addr = s.accept()
     try:
         if gc.mem_free() < 102000:
             gc.collect()
-        conn, addr = s.accept()
         conn.settimeout(3.0)
         request = conn.recv(1024)
         conn.settimeout(None)
